@@ -37,7 +37,7 @@ const LinksAndCounts = ({tournament}) => {
             </li>
           )}
 
-          {tournament.config.enable_free_entries && (
+          {(tournament.config.enable_free_entries || tournament.freeEntryCount > 0) && (
             <li className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center`}>
               <Link href={`${router.asPath}/free_entries`}
                     className={''}>
