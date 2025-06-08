@@ -11,6 +11,8 @@ const Details = () => {
   const {state, dispatch} = useDirectorContext();
   const {authToken} = useLoginContext();
 
+  const REGISTRATION_WITHOUT_PAYMENTS = 'registration_without_payments';
+
   const STANDARD_EVENTS = [
     {
       name: 'Singles',
@@ -79,6 +81,8 @@ const Details = () => {
       website_config_item_id: null,
       tournament_type: 'igbo_standard',
       tournament_type_config_item_id: null,
+      registration_without_payments: false,
+      registration_without_payments_item_id: null,
       events: [...STANDARD_EVENTS],
     },
     valid: false,
@@ -105,6 +109,12 @@ const Details = () => {
       if (typeConfigItem) {
         newFormData.fields.tournament_type = typeConfigItem.value;
         newFormData.fields.tournament_type_config_item_id = typeConfigItem.id;
+      }
+
+      const regWithoutPayItem = state.builder.tournament.config_items.find(({key}) => key === REGISTRATION_WITHOUT_PAYMENTS);
+      if (regWithoutPayItem) {
+        newFormData.fields.registration_without_payments = regWithoutPayItem.value;
+        newFormData.fields.registration_without_payments_item_id = regWithoutPayItem.id;
       }
 
       newFormData.fields.events = [...state.builder.tournament.events];
@@ -136,6 +146,8 @@ const Details = () => {
       } else {
         changedData.fields.events = [...STANDARD_EVENTS];
       }
+    } else if (fieldName === 'registration_without_payments') {
+      changedData.fields.registration_without_payments = event.target.checked;
     } else {
       changedData.fields[fieldName] = newValue;
     }
@@ -250,6 +262,23 @@ const Details = () => {
                  className={'form-control'}
                  value={formData.fields.website}
                  onChange={inputChanged}/>
+        </div>
+      </div>
+
+      <div className={`row ${classes.FieldRow}`}>
+        <div className={`col-12 col-md-9 offset-md-3`}>
+          <div className={'form-check'}>
+            <input className={'form-check-input'}
+                   type='checkbox'
+                   checked={formData.fields.registration_without_payments}
+                   onChange={inputChanged}
+                   name={'registration_without_payments'}
+                   id={'registration_without_payments'}/>
+            <label className={'form-check-label'}
+                   htmlFor={'registration_without_payments'}>
+              Registration Without Payments
+            </label>
+          </div>
         </div>
       </div>
 
