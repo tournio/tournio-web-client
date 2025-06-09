@@ -108,7 +108,7 @@ const RegistrationOptions = () => {
   }
 
   return (
-    <Card className={'mb-2'}>
+    <Card className={'mb-3'}>
       <Card.Header as={'h5'} className={'fw-light'}>
         Registration Options
       </Card.Header>
@@ -130,22 +130,6 @@ const RegistrationOptions = () => {
             </div>
           )
         })}
-        {/*{REGISTRATION_TYPE_LABELS.map(kind => {*/}
-        {/*    return !allowedOptionSet[kind.key] ? '' :*/}
-        {/*      <div className={'form-check form-switch'} key={kind.key}>*/}
-        {/*        <input type={'checkbox'}*/}
-        {/*               className={'form-check-input'}*/}
-        {/*               role={'switch'}*/}
-        {/*               id={kind.key}*/}
-        {/*               name={kind.key}*/}
-        {/*               checked={formData.get(kind.key)}*/}
-        {/*               onChange={optionToggled}/>*/}
-        {/*        <label htmlFor={kind.key}*/}
-        {/*               className={'form-check-label'}>*/}
-        {/*          {kind.label}*/}
-        {/*        </label>*/}
-        {/*      </div>*/}
-        {/*  })}*/}
 
       </Card.Body>
       <ErrorAlert message={errorMessage}
