@@ -16,7 +16,15 @@ const Configuration = () => {
   const SKIPPABLE_ITEMS = [
     'bowler_form_fields',
     'stripe_receipts',
+    'registration_without_payments',
+    'tournament_type',
   ]
+
+  // if we can't accept payments, then there are a few more that we can exclude.
+  const relevantItem = tournament.config_items.find(({key}) => key === 'registration_without_payments');
+  if (relevantItem && relevantItem.value) {
+    SKIPPABLE_ITEMS.push('accept_payments', 'enable_free_entries', 'enable_unpaid_signups', 'skip_stripe');
+  }
 
   return (
     <ErrorBoundary>
