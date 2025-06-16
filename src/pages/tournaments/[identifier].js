@@ -40,6 +40,8 @@ const Page = () => {
     )
   }
 
+  const registeringWithoutPayments = !!tournament.config.registration_without_payments;
+
   return (
     <div className={classes.TournamentDetails}>
       <Row>
@@ -62,18 +64,20 @@ const Page = () => {
           </div>
 
           <div className={'d-flex'}>
-            <div className={'flex-fill w-100 me-3'}>
-              <div className={classes.Details}>
-                <TraditionalPriceBreakdown tournament={tournament}/>
-                {/*<EventPriceBreakdown tournament={tournament}/>*/}
+            {!registeringWithoutPayments && (
+              <div className={'flex-fill w-100 me-3'}>
+                <div className={classes.Details}>
+                  <TraditionalPriceBreakdown tournament={tournament}/>
+                  {/*<EventPriceBreakdown tournament={tournament}/>*/}
+                </div>
               </div>
-            </div>
+            )}
             <div className={'d-none d-xl-block flex-shrink-1'}>
               <YouWillNeed/>
             </div>
           </div>
 
-          <PayButton disabled={!tournament.config.accept_payments} />
+          {!registeringWithoutPayments && <PayButton disabled={!tournament.config.accept_payments} />}
           <RegisterButtons tournament={tournament}/>
 
           <div className={'d-xl-none mt-3'}>
