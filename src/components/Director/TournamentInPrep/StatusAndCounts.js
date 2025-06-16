@@ -146,6 +146,9 @@ const StatusAndCounts = () => {
     return '';
   }
 
+  const relevantItem = tournament.config_items.find(({key}) => key === 'registration_without_payments');
+  const registeringWithoutPayments = relevantItem && relevantItem.value;
+
   ////////////////////////////
 
   const downloads = (
@@ -159,12 +162,14 @@ const StatusAndCounts = () => {
       >
         CSV
       </Card.Link>
-      <Card.Link className={'btn btn-sm btn-outline-primary'}
-                 href={'#'}
-                 onClick={(event) => downloadClicked(event, `/tournaments/${tournament.identifier}/financial_csv_download`, 'bowlers_financial.csv')}
-      >
-        Financial CSV
-      </Card.Link>
+      {!registeringWithoutPayments && (
+        <Card.Link className={'btn btn-sm btn-outline-primary'}
+                   href={'#'}
+                   onClick={(event) => downloadClicked(event, `/tournaments/${tournament.identifier}/financial_csv_download`, 'bowlers_financial.csv')}
+        >
+          Financial CSV
+        </Card.Link>
+      )}
       <Card.Link className={'btn btn-sm btn-outline-primary'}
                  href={'#'}
                  onClick={(event) => downloadClicked(event, `/tournaments/${tournament.identifier}/igbots_download`, 'bowlers.xml')}
@@ -203,15 +208,17 @@ const StatusAndCounts = () => {
           {tournament.team_count}
         </Badge>
       </ListGroup.Item>
-      <ListGroup.Item className={'d-flex justify-content-between align-items-center'}
-                      action
-                      as={Link}
-                      href={`/director/tournaments/${tournament.identifier}/free_entries`}>
-        Free Entries
-        <Badge pill={true} >
-          {tournament.free_entry_count}
-        </Badge>
-      </ListGroup.Item>
+      {!registeringWithoutPayments && (
+        <ListGroup.Item className={'d-flex justify-content-between align-items-center'}
+                        action
+                        as={Link}
+                        href={`/director/tournaments/${tournament.identifier}/free_entries`}>
+          Free Entries
+          <Badge pill={true} >
+            {tournament.free_entry_count}
+          </Badge>
+        </ListGroup.Item>
+      )}
     </ListGroup>
   );
 
