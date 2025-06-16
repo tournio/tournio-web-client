@@ -54,7 +54,7 @@ const Page = () => {
     const updatedState = {...state};
     switch (success) {
       case '1':
-        updatedState.successMessage = 'Registration successful! You may now select events, extras, and pay entry fees.';
+        updatedState.successMessage = 'Registration successful!';
         break;
       case '2':
         updatedState.successMessage = 'Your purchase is complete.';
@@ -92,8 +92,6 @@ const Page = () => {
     }));
   }
 
-  const {bowler, team, tournament} = data;
-
   // @refactor This should make use of useApi, or a wrapper function, rather than making the request
   // using Axios directly.
   const signupableUpdated = (identifier, event, onSuccess = () => {}, onFailure = () => {}) => {
@@ -126,12 +124,21 @@ const Page = () => {
       });
   }
 
-  let displayFreeEntryForm = tournament.config.enable_free_entries;
+  const {bowler, team, tournament} = data;
+
+  const registeringWithoutPayments = tournament.config.registration_without_payments;
+
+  let displayFreeEntryForm = !registeringWithoutPayments && tournament.config.enable_free_entries;
   if (commerce.freeEntry && commerce.freeEntry.uniqueCode) {
     displayFreeEntryForm = false;
   }
   if (commerce.purchasedItems.some(item => item.purchasableItem.determination === 'entry_fee')) {
     displayFreeEntryForm = false;
+  }
+
+  let successSupplement = ' You may now select events, extras, and pay entry fees.';
+  if (registeringWithoutPayments) {
+    successSupplement = ' We look forward to seeing you.';
   }
 
   return (
@@ -174,13 +181,13 @@ const Page = () => {
       </Row>
 
       <SuccessAlert className={``}
-                    message={state.successMessage}
+                    message={state.successMessage + successSupplement}
                     onClose={clearSuccessMessage}/>
       <ErrorAlert className={``}
                   message={state.errorMessage}
                   onClose={clearErrorMessage}/>
-      <Menu signupChanged={signupableUpdated}/>
 
+      {!registeringWithoutPayments && <Menu signupChanged={signupableUpdated}/>}
     </div>
   );
 }
