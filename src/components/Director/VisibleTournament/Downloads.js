@@ -70,6 +70,10 @@ const Downloads = () => {
     });
   }
 
+  // if we can't accept payments, there are some components we should not show.
+  const relevantItem = tournament.config_items.find(({key}) => key === 'registration_without_payments');
+  const registeringWithoutPayments = relevantItem && relevantItem.value;
+
   return (
     <div className={classes.Downloads}>
       <Card>
@@ -84,13 +88,15 @@ const Downloads = () => {
           >
             Bowler CSV
           </Link>
-          <Link className={'btn btn-sm btn-outline-primary mx-2 mb-2'}
-                href={'#'}
-                disabled={tournament.bowler_count === 0}
-                onClick ={(event) => downloadClicked(event, 'financial_csv', 'financial_report.csv')}
-          >
-            Financial CSV
-          </Link>
+          {!registeringWithoutPayments && (
+            <Link className={'btn btn-sm btn-outline-primary mx-2 mb-2'}
+                  href={'#'}
+                  disabled={tournament.bowler_count === 0}
+                  onClick ={(event) => downloadClicked(event, 'financial_csv', 'financial_report.csv')}
+            >
+              Financial CSV
+            </Link>
+          )}
           <Link className={'btn btn-sm btn-outline-primary mx-2 mb-2'}
                      href={'#'}
                      disabled={tournament.bowler_count === 0}

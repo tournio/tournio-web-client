@@ -41,6 +41,9 @@ const Counts = () => {
 
   const hasTeamEvent = tournament.events.some(({rosterType}) => rosterType === 'team')
 
+  // if we can't accept payments, there are some components we should not show.
+  const registeringWithoutPayments = tournament.config.registration_without_payments;
+
   return (
     <div className={classes.Counts}>
       <Card>
@@ -67,16 +70,18 @@ const Counts = () => {
               </Badge>
             </ListGroup.Item>
           )}
-          <ListGroup.Item className={'d-flex justify-content-between align-items-center'}
-                          variant={'primary'}
-                          action={true}
-                          as={Link}
-                          href={`${currentPath}/free_entries`}>
-            Free Entries
-            <Badge pill={true}>
-              {tournament.freeEntryCount}
-            </Badge>
-          </ListGroup.Item>
+          {!registeringWithoutPayments && (
+            <ListGroup.Item className={'d-flex justify-content-between align-items-center'}
+                            variant={'primary'}
+                            action={true}
+                            as={Link}
+                            href={`${currentPath}/free_entries`}>
+              Free Entries
+              <Badge pill={true}>
+                {tournament.freeEntryCount}
+              </Badge>
+            </ListGroup.Item>
+          )}
         </ListGroup>
       </Card>
     </div>
