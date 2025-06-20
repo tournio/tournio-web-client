@@ -936,7 +936,7 @@ const BowlerPage = () => {
     );
   }
 
-  const purchases = (
+  const purchases = !tournament.config.registration_without_payments && (
     <Card className={'mb-3'}>
       <Card.Header as={'h6'} className={'fw-light'}>
         Purchases
@@ -975,7 +975,7 @@ const BowlerPage = () => {
     </Card>
   );
 
-  const ledgerEntries = (
+  const ledgerEntries = !tournament.config.registration_without_payments && (
     <Card className={'mb-3'}>
       <Card.Header as={'h6'} className={'fw-light'}>
         Ledger Entries
@@ -1086,7 +1086,7 @@ const BowlerPage = () => {
   );
 
   const signups = bowler.signups.filter(({status}) => ['requested', 'paid'].includes(status));
-  const signedUpEventsCard = (
+  const signedUpEventsCard = !tournament.config.registration_without_payments && (
     <Card className={'mb-3'}>
       <Card.Header as={'h6'}>
         Optional Sign-ups
