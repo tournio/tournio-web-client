@@ -40,6 +40,14 @@ const PurchasableItems = () => {
     return '';
   }
 
+  // if we can't accept payments, then we should display no component here.
+  const relevantItem = tournament.config_items.find(({key}) => key === 'registration_without_payments');
+  const registeringWithoutPayments = relevantItem && relevantItem.value;
+
+  if (registeringWithoutPayments) {
+    return '';
+  }
+
   ////////////////////////////
 
   const ledgerItems = tournament.purchasable_items.filter(item => {

@@ -82,6 +82,19 @@ const StripeStatus = ({needStatus}) => {
     return '';
   }
 
+  const relevantItem = tournament.config_items.find(({key}) => key === 'registration_without_payments');
+  const registeringWithoutPayments = relevantItem && relevantItem.value;
+
+  if (registeringWithoutPayments) {
+    return (
+      <Card border={'info'} className={`${classes.StripeStatus}`}>
+        <Card.Body>
+          Registration will not be connected to Stripe.
+        </Card.Body>
+      </Card>
+    );
+  }
+
   return (
     <ErrorBoundary>
       <Card className={`${classes.StripeStatus}`}>

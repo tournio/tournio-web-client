@@ -14,16 +14,23 @@ const StateChangeButton = ({stateChangeInitiated}) => {
     return '';
   }
 
+  const relevantItem = tournament.config_items.find(({key}) => key === 'registration_without_payments');
+  const registeringWithoutPayments = relevantItem && relevantItem.value;
+
   const unmetTestingCriteria = [];
   const unmetOpeningCriteria = [];
-  if (!tournament.stripe_account || !tournament.stripe_account.can_accept_payments) {
-    unmetTestingCriteria.push('Payment Integration');
-    unmetOpeningCriteria.push('Payment Integration');
+
+  if (!registeringWithoutPayments) {
+    if (!tournament.stripe_account || !tournament.stripe_account.can_accept_payments) {
+      unmetTestingCriteria.push('Payment Integration');
+      unmetOpeningCriteria.push('Payment Integration');
+    }
+    if (!tournament.purchasable_items.some(item => item.determination === 'entry_fee' || item.determination === 'event')) {
+      unmetTestingCriteria.push('Entry fee or main event');
+      unmetOpeningCriteria.push('Entry fee or main event');
+    }
   }
-  if (!tournament.purchasable_items.some(item => item.determination === 'entry_fee' || item.determination === 'event')) {
-    unmetTestingCriteria.push('Entry fee or main event');
-    unmetOpeningCriteria.push('Entry fee or main event');
-  }
+
   if (!tournament.image_url) {
     unmetTestingCriteria.push('Logo image');
     unmetOpeningCriteria.push('Logo image');

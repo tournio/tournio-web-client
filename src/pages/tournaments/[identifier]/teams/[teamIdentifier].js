@@ -7,20 +7,23 @@ import {updateObject, useTeam, useTheTournament} from "../../../../utils";
 import ErrorAlert from "../../../../components/common/ErrorAlert";
 import Link from "next/link";
 import TournamentLogo from "../../../../components/Registration/TournamentLogo/TournamentLogo";
+import SuccessAlert from "../../../../components/common/SuccessAlert";
 
 const Page = () => {
   const router = useRouter();
-  const {identifier, teamIdentifier} = router.query;
+  const {identifier, teamIdentifier, success} = router.query;
 
   const [state, setState] = useState({
     currentLocation: null,
+    successMessage: null,
   });
 
   useEffect(() => {
     setState(updateObject(state, {
       currentLocation: window.location,
+      successMessage: success ? 'Registration successful!' : '',
     }));
-  }, []);
+  }, [success]);
 
   const {loading: teamLoading, team, error: fetchError} = useTeam(teamIdentifier);
   const {loading: tournamentLoading, tournament, error: tournamentError} = useTheTournament(identifier);
@@ -47,10 +50,18 @@ const Page = () => {
 
   //////////////////////////
 
+  const clearSuccessMessage = () => {
+    setState(updateObject(state, {
+      successMessage: null,
+    }));
+  }
+
   const port = process.env.NODE_ENV === 'development' ? `:${state.currentLocation.port}` : '';
   const shareUrl = `${state.currentLocation.protocol}//${state.currentLocation.hostname}${port}/teams/${teamIdentifier}`;
 
-  const tournamentType = tournament.config['tournament_type'];
+  const tournamentType = tournament.config.tournament_type;
+
+  const registeringWithoutPayments = tournament.config.registration_without_payments;
 
   const rows = Array(tournament.config['team_size']);
   let firstAvailablePosition = 0;
@@ -67,13 +78,15 @@ const Page = () => {
           <div className={'ps-3'}>
             {bowler.fullName}
           </div>
-          <div className={'ms-auto pe-2'}>
-            <Link className={`btn btn-sm btn-success`}
-                  title={'Pay entry fees, choose extras'}
-                  href={`/bowlers/${bowler.identifier}`}>
-              Fees&nbsp;&amp;&nbsp;Extras
-            </Link>
-          </div>
+          {!registeringWithoutPayments && (
+            <div className={'ms-auto pe-2'}>
+              <Link className={`btn btn-sm btn-success`}
+                    title={'Pay entry fees, choose extras'}
+                    href={`/bowlers/${bowler.identifier}`}>
+                Fees&nbsp;&amp;&nbsp;Extras
+              </Link>
+            </div>
+          )}
         </div>
       );
     } else {
@@ -111,6 +124,11 @@ const Page = () => {
   const showPreferredShift = tournamentType === 'igbo_multi_shift' || tournamentType === 'single_event' && tournament.shifts.length > 1;
   const showMultipleShifts = tournamentType === 'igbo_mix_and_match';
 
+  let successSupplement = ' You may now select events, extras, and pay entry fees.';
+  if (registeringWithoutPayments) {
+    successSupplement = ' We look forward to seeing you.';
+  }
+
   return (
     <>
       <div className={`row d-md-none`}>
@@ -134,6 +152,10 @@ const Page = () => {
         </div>
 
         <div className={'col-12 col-md-8'}>
+          <SuccessAlert className={``}
+                        message={state.successMessage + successSupplement}
+                        onClose={clearSuccessMessage}/>
+
           <h1 className={'d-none d-md-block display-5 ps-1 pt-2 py-3 bg-primary-subtle'}>
             Team Details
           </h1>

@@ -52,6 +52,7 @@ const Page = () => {
       query: {
         identifier: identifier,
         teamIdentifier: teamData.identifier,
+        success: 1,
       }
     });
   }

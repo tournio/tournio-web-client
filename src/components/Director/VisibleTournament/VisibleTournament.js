@@ -30,10 +30,10 @@ const VisibleTournament = ({closeTournament}) => {
   const EDITABLE_CONFIG_ITEMS = [
     "display_capacity",
     "publicly_listed",
-    "accept_payments",
-    "automatic_discount_voids",
-    "automatic_late_fees",
     "email_in_dev",
+  ];
+  const MONEY_CONFIG_ITEMS = [
+    "accept_payments",
     "skip_stripe",
     "enable_unpaid_signups",
     "enable_free_entries",
@@ -42,6 +42,8 @@ const VisibleTournament = ({closeTournament}) => {
   const {loading, tournament} = useTournament();
 
   const [editableConfigItems, setEditableConfigItems] = useState(EDITABLE_CONFIG_ITEMS);
+  const [registeringWithoutPayments, setRegisteringWithoutPayments] = useState(false);
+
   useEffect(() => {
     if (loading || !tournament) {
       return;
@@ -60,6 +62,14 @@ const VisibleTournament = ({closeTournament}) => {
       items = items.filter(elem => elem !== "automatic_discount_voids");
     }
 
+    // hide/show some things based on whether we can accept payments
+    const relevantItem = tournament.config_items.find(({key}) => key === 'registration_without_payments');
+    if (relevantItem && relevantItem.value) {
+      setRegisteringWithoutPayments(true);
+    } else {
+      items = items.concat(MONEY_CONFIG_ITEMS)
+    }
+
     setEditableConfigItems(items);
   }, [loading, tournament]);
 
@@ -67,11 +77,20 @@ const VisibleTournament = ({closeTournament}) => {
     return '';
   }
 
-  const divisionNameSet = new Set();
-  tournament.purchasable_items.division.forEach(({name}) => {
-    divisionNameSet.add(name);
-  });
-  const divisionNames = Array.from(divisionNameSet);
+  let purchaseCharts = '';
+  if (!registeringWithoutPayments) {
+    const divisionNameSet = new Set();
+    tournament.purchasable_items.division.forEach(({name}) => {
+      divisionNameSet.add(name);
+    });
+    purchaseCharts = <>
+      {divisionNameSet.values().map(name => <DivisionItemsWeek title={name} key={name}/>)}
+      <OptionalItemsWeek title={'Optional Events'}
+                         dataKeys={['bowling']}/>
+      <OptionalItemsWeek title={'Extras'}
+                         dataKeys={['banquet', 'product']}/>
+      </>
+  }
 
   const lessImportantStuff = (
     <>
@@ -79,7 +98,7 @@ const VisibleTournament = ({closeTournament}) => {
       <Accordion className={'mb-3'}>
         <Basics eventKey={'0'}/>
         <AdditionalQuestions eventKey={'2'}/>
-        <PurchasableItems eventKey={'3'}/>
+        {!registeringWithoutPayments && <PurchasableItems eventKey={'3'}/>}
       </Accordion>
 
       <Contacts/>
@@ -143,11 +162,7 @@ const VisibleTournament = ({closeTournament}) => {
           <Capacity/>
           <RegistrationsWeek/>
           <RegistrationTypesWeek/>
-          {divisionNames.map(name => <DivisionItemsWeek title={name} key={name}/> )}
-          <OptionalItemsWeek title={'Optional Events'}
-                             dataKeys={['bowling']}/>
-          <OptionalItemsWeek title={'Extras'}
-                             dataKeys={['banquet', 'product']}/>
+          {purchaseCharts}
         </div>
 
         <div className={'d-md-none d-lg-block col-12 col-md-4 col-lg-3'}>

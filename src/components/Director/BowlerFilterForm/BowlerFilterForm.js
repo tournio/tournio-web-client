@@ -6,7 +6,7 @@ import {Col, FloatingLabel, Row} from "react-bootstrap";
 
 import classes from './BowlerFilterForm.module.scss';
 
-const BowlerFilterForm = ({onFilterApplication, onFilterReset, includeTeamFilters=true}) => {
+const BowlerFilterForm = ({onFilterApplication, onFilterReset, includeTeamFilters=true, showMoney=true}) => {
   const initialState = {
     name: '',
     email: '',
@@ -110,29 +110,32 @@ const BowlerFilterForm = ({onFilterApplication, onFilterReset, includeTeamFilter
       </Form.Group>
       <Row>
         <Col sm={6}>
-
-          <Form.Group controlId={'amount_due'}
-                      as={Row}
-                      className={'mb-3'}>
-            <Col sm={{span: 8, offset: 4}}>
-              <Form.Check type={'checkbox'}
-                          label={'Not paid in full'}
-                          checked={filterForm.amount_due}
-                          onChange={(event) => inputChangedHandler(event, 'amount_due')}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group controlId={'has_free_entry'}
-                      as={Row}
-                      className={'mb-3'}>
-            <Col sm={{span: 8, offset: 4}}>
-              <Form.Check type={'checkbox'}
-                          label={'Has a free entry'}
-                          checked={filterForm.has_free_entry}
-                          onChange={(event) => inputChangedHandler(event, 'has_free_entry')}
-              />
-            </Col>
-          </Form.Group>
+          {showMoney && (
+            <Form.Group controlId={'amount_due'}
+                        as={Row}
+                        className={'mb-3'}>
+              <Col sm={{span: 8, offset: 4}}>
+                <Form.Check type={'checkbox'}
+                            label={'Not paid in full'}
+                            checked={filterForm.amount_due}
+                            onChange={(event) => inputChangedHandler(event, 'amount_due')}
+                />
+              </Col>
+            </Form.Group>
+          )}
+          {showMoney && (
+            <Form.Group controlId={'has_free_entry'}
+                        as={Row}
+                        className={'mb-3'}>
+              <Col sm={{span: 8, offset: 4}}>
+                <Form.Check type={'checkbox'}
+                            label={'Has a free entry'}
+                            checked={filterForm.has_free_entry}
+                            onChange={(event) => inputChangedHandler(event, 'has_free_entry')}
+                />
+              </Col>
+            </Form.Group>
+          )}
           {includeTeamFilters && (
             <Form.Group controlId={'no_team'}
                         as={Row}
