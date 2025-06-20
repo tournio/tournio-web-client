@@ -94,7 +94,7 @@ const IgboMemberCell = ({
   );
 }
 
-const BowlerListing = ({bowlers, showTeams, onBowlerUpdate}) => {
+const BowlerListing = ({bowlers, showTeams, onBowlerUpdate, showMoney=true}) => {
   const nameSortFunc = (rowA, rowB, columnId) => {
     let [a, b] = [rowA.values[columnId], rowB.values[columnId]];
     return a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase());
@@ -146,34 +146,6 @@ const BowlerListing = ({bowlers, showTeams, onBowlerUpdate}) => {
         disableSortBy: true,
         filter: isOrIsNot,
       },
-      {
-        Header: 'Free Entry?',
-        accessor: 'has_free_entry',
-        disableSortBy: true,
-        Cell: ({cell: {value}}) => {
-          const classes = value ? ['text-success', 'bi-check-lg', 'bi'] : ['text-danger', 'bi-dash-lg', 'bi'];
-          const text = value ? 'Yes' : 'No';
-          return (
-            <div className={'text-center'}>
-              <i className={classes.join(' ')} aria-hidden={true}/>
-              <span className={'visually-hidden'}>{text}</span>
-            </div>
-          );
-        }
-      },
-      {
-        Header: 'Paid',
-        accessor: 'amount_paid',
-        disableSortBy: true,
-        filter: equals,
-        Cell: ({value}) => `$${value}`,
-      },
-      {
-        Header: 'Due',
-        accessor: 'amount_due',
-        filter: doesNotEqual,
-        Cell: ({value}) => `$${value}`,
-      },
     ];
 
     if (showTeams) {
@@ -200,6 +172,37 @@ const BowlerListing = ({bowlers, showTeams, onBowlerUpdate}) => {
         },
       );
     }
+
+    tail.push(
+      {
+        Header: showMoney ? 'Free Entry?' : '',
+        accessor: 'has_free_entry',
+        disableSortBy: true,
+        Cell: ({cell: {value}}) => {
+          const classes = value ? ['text-success', 'bi-check-lg', 'bi'] : ['text-danger', 'bi-dash-lg', 'bi'];
+          const text = value ? 'Yes' : 'No';
+          return showMoney && (
+            <div className={'text-center'}>
+              <i className={classes.join(' ')} aria-hidden={true}/>
+              <span className={'visually-hidden'}>{text}</span>
+            </div>
+          );
+        }
+      },
+      {
+        Header: showMoney ? 'Paid' : '',
+        accessor: 'amount_paid',
+        disableSortBy: true,
+        filter: equals,
+        Cell: ({value}) => showMoney ? `$${value}` : '',
+      },
+      {
+        Header: showMoney ? 'Due' : '',
+        accessor: 'amount_due',
+        filter: doesNotEqual,
+        Cell: ({value}) => showMoney ? `$${value}` : '',
+      },
+    );
 
     return head.concat(tail);
   }, []);
@@ -314,6 +317,7 @@ const BowlerListing = ({bowlers, showTeams, onBowlerUpdate}) => {
       {data.length > 0 && (
         <BowlerFilterForm onFilterApplication={filterThatData}
                           onFilterReset={resetThoseFilters}
+                          showMoney={showMoney}
                           includeTeamFilters={showTeams}/>
       )}
       {list}

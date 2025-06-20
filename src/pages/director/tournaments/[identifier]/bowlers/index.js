@@ -56,6 +56,7 @@ const BowlersIndex = () => {
           )}
           <BowlerListing bowlers={bowlers}
                          showTeams={showTeams}
+                         showMoney={!tournament.config.registration_without_payments}
                          onBowlerUpdate={bowlerUpdated} />
         </Col>
       </Row>
