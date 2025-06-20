@@ -180,12 +180,16 @@ const Page = () => {
         </Col>
       </Row>
 
-      <SuccessAlert className={``}
+      {state.successMessage && (
+        <SuccessAlert className={``}
                     message={state.successMessage + successSupplement}
                     onClose={clearSuccessMessage}/>
-      <ErrorAlert className={``}
-                  message={state.errorMessage}
-                  onClose={clearErrorMessage}/>
+      )}
+      {state.errorMessage && (
+        <ErrorAlert className={``}
+                    message={state.errorMessage}
+                    onClose={clearErrorMessage}/>
+      )}
 
       {!registeringWithoutPayments && <Menu signupChanged={signupableUpdated}/>}
     </div>
