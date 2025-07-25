@@ -10,7 +10,7 @@ const Footer = () => (
         About
       </a>
       <span className={classes.Element}>
-        &copy; 2015-2024
+        &copy; 2015-2025
         {' '}
         <a href={'mailto:hello@tourn.io'}>
           Tournio
