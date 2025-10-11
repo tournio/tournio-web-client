@@ -39,7 +39,8 @@ const Counts = () => {
     );
   }
 
-  const hasTeamEvent = tournament.events.some(({rosterType}) => rosterType === 'team')
+  const hasTeamEvent = tournament.events.some(({rosterType}) => rosterType === 'team');
+  const hasTriosEvent = tournament.events.some(({rosterType}) => rosterType === 'trio');
 
   // if we can't accept payments, there are some components we should not show.
   const registeringWithoutPayments = tournament.config.registration_without_payments;
@@ -59,6 +60,18 @@ const Counts = () => {
             </Badge>
           </ListGroup.Item>
           {hasTeamEvent && (
+            <ListGroup.Item className={'d-flex justify-content-between align-items-center'}
+                            variant={'primary'}
+                            action={true}
+                            as={Link}
+                            href={`${currentPath}/teams`}>
+              Teams
+              <Badge pill={true}>
+                {tournament.teamCount}
+              </Badge>
+            </ListGroup.Item>
+          )}
+          {hasTriosEvent && (
             <ListGroup.Item className={'d-flex justify-content-between align-items-center'}
                             variant={'primary'}
                             action={true}
