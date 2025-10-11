@@ -73,7 +73,11 @@ const Page = () => {
 
     // If that's the last one, then move along!
     if (newTakenPositions.length === tournament.config.team_size) {
-      router.push(`/tournaments/${identifier}/doubles-partners`);
+      if (tournament.events.some(({rosterType}) => rosterType === 'double')) {
+        router.push(`/tournaments/${identifier}/doubles-partners`);
+      } else {
+        router.push(`/tournaments/${identifier}/new-team-review`);
+      }
     }
 
     // Otherwise, we're good as we are.
