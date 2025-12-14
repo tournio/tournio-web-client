@@ -14,15 +14,15 @@ const about = () => (
         </Accordion.Header>
         <Accordion.Body>
           <p>
-            Tournio is intended to be a low-cost, low-effort way for IGBO tournament directors to offer their bowlers
+            Tourn.io was intended to be a low-cost, low-effort way for IGBO tournament directors to offer their bowlers
             online registration and purchase of optional events and products, as well as to prepare for their
             tournaments by consolidating and correcting data, monitoring the receipt of payments, and offering the
             export of registration data in spreadsheet format (comma-separated value, or CSV) as well as a format
             suitable for import into the IGBO-TS software.
           </p>
           <p>
-            When bowlers pay their registration fees and purchase optional events, the transactions are made directly
-            with the tournament via Stripe; no funds pass through this system. Thus, Tournio charges no transaction fees.
+            When bowlers paid their registration fees and purchase optional events, the transactions were made directly
+            with the tournament via Stripe; no funds passed through this system. Thus, Tourn.io charged no transaction fees.
           </p>
         </Accordion.Body>
       </Accordion.Item>
@@ -33,8 +33,7 @@ const about = () => (
         </Accordion.Header>
         <Accordion.Body>
           <p>
-            I am proud to say the number of tournaments using Tournio continues to grow. Past and present
-            tournaments include:
+            IGBO tournaments that used Tourn.io for their registration include:
           </p>
           <ul>
             <li>
@@ -47,9 +46,7 @@ const about = () => (
               <Link href={'https://www.bigdclassic.com/'}>Big D Classic</Link>
             </li>
             <li>
-              <Link href={'https://www.damitbowling.org'}>
-                Dallas Area Masters Invitational Tournament (DAMIT)
-              </Link>
+              Dallas Area Masters Invitational Tournament (DAMIT)
             </li>
             <li>
               <Link href={'https://bowldiglit.org/'}>
@@ -77,6 +74,9 @@ const about = () => (
               <Link href={'https://www.goldengateclassic.org/'}>San Francisco Golden Gate Classic</Link>
             </li>
             <li>
+              <Link href={'https://www.shiftid.org/'}>Seniors Handicap Invitational Family Tournament in DFW (SHIFTID)</Link>
+            </li>
+            <li>
               <Link href={'https://showmeclassic.com/'}>Show Me St. Louis Classic</Link>
             </li>
             <li>
@@ -95,30 +95,25 @@ const about = () => (
         </Accordion.Header>
         <Accordion.Body>
         <p>
-            While I do charge a fee for the use of this system, the fee is intended to cover the costs I incur in
-            operating it, not to turn a profit. If the day should arrive when there are enough participating tournaments
-            to turn a profit, then all proceeds beyond operating costs will be donated to{' '}
-            <Link href={'https://www.aidslifecycle.org/'}>
-              AIDS/LifeCycle
-            </Link>
-            {' '}or another organization doing important work for the LGBTQIA+ community.
+            While I did charge a fee for the use of this system, the fee was intended to cover the costs I incurred in
+            operating it, not to turn a profit.
           </p>
           <ul>
             <li>
-              For registration only, the fee for using Tournio is equivalent to{' '}
+              For registration only, the fee for using Tourn.io was equivalent to{' '}
               <strong>
                 one tournament entry fee
               </strong>
-              . Of course, this varies from tournament to tournament, but it effectively makes the fee equivalent to
+              . Of course, this varied from tournament to tournament, but it effectively made the fee equivalent to
               the cost of a free entry.
             </li>
             <li>
-              I run the informational sites for a few tournaments; for them, my fee is{' '}
+              I ran the informational sites for a few tournaments; for them, my fee was{' '}
               <strong>
                 $150/year
               </strong>
               {' '}for the domain, hosting, website and
-              Tournio bundle.
+              Tourn.io bundle.
             </li>
           </ul>
         </Accordion.Body>
@@ -130,7 +125,7 @@ const about = () => (
         </Accordion.Header>
         <Accordion.Body>
           <p>
-            In a nutshell, here are the main features/actions the director interface lets you do:
+            In a nutshell, here are the main features/actions the director interface let you do:
           </p>
           <ul>
             <li>
@@ -189,11 +184,6 @@ const about = () => (
               or to new teams only.
             </li>
           </ul>
-          <p>Interested in using the system for your tournament?{' '}
-            <Link href={'mailto:hello@tourn.io?subject=Using%20Tournio'}>
-              Drop me a line
-            </Link>!
-          </p>
         </Accordion.Body>
       </Accordion.Item>
 
